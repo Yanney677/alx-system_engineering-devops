@@ -1,1 +1,1 @@
-shell bascis
+shell basics
