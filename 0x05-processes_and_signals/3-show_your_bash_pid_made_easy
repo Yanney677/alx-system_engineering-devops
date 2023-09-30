@@ -3,13 +3,4 @@
 # A bash script that displays the PID, along with the process name,
 # of processes whose name contain the word bash.
 
-# Get the list of processes that contain "bash"
-process_list=$(pgrep -a bash)
-
-# Iterate through the process list and extract the PID and process name
-while read -r process_info;
-do
-    pid=$(echo "$process_info" | awk '{print $1}')
-    process_name=$(echo "$process_info" | awk '{print $2}')
-    echo "PID: $pid, Process Name: $process_name"
-done <<< "$process_list"
+pgrep -l bash
