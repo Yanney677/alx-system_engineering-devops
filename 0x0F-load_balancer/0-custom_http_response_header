@@ -1,28 +1,37 @@
 #!/usr/bin/env bash
-# Customizing a 404-error_page
+#Installs Nginx with the following configurations:
+#Listens on port 80.
+#Returns a page containing "Hello World!" when queried
+#at the root with a curl GET request.
+#Configures /redirect_me as a "301 Moved Permanently".
+#Includes a custom 404 page containing "Ceci n'est pas une page".
+#Contains a custom HTTP header named X-Served-By.
+#The value of the HTTP header is the hostname of the running server.
 
-# Updating Packages before performing installations
-sudo apt-get update
-sudo apt-get install -y nginx
+apt-get install -y nginx
 
-# Creating an index.html page
-echo "Hello World!" | sudo tee /var/www/html/index.html
+mkdir -p /var/www/html
+touch /var/www/html/index.html
+echo "Hello World!" > /var/www/html/index.html
+touch /var/www/html/404.html
+echo "Ceci n'est pas une page" > /var/www/html/404.html
 
-# Performing a "moved permanently redirection" (301)
-new_string="server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/Yanney677 permanent;"
-sudo sed -i "s/server_name _;/$new_string/" /etc/nginx/sites-enabled/default
+printf %s "server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    add_header X-Served-By $HOSTNAME;
+    root   /var/www/html;
+    index  index.html index.htm;
 
-# Creating a 404 Custom Error page
-echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
-new_string="listen 80 default_server;\n\terror_page 404 \/404.html;\n\tlocation = \/404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
+    location /redirect_me {
+        return 301 https//YouTube.com/;
+    }
 
-sudo sed -i "s/listen 80 default_server;/$new_string/" /etc/nginx/sites-enabled/default
+    error_page 404 /404.html;
+    location /404 {
+      root /var/www/html;
+      internal;
+    }
+}" > /etc/nginx/sites-available/default
 
-# Creating an HTTP response header
-sudo sed -i "/server_name _/a add_header X-Served-By $HOSTNAME;" /etc/nginx/sites-enabled/default
-
-# Testing configurations for syntax errors
-sudo nginx -t
-
-# Restart nginx
-sudo service nginx restart
+service nginx restart
