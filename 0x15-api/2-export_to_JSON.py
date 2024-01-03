@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Exports employee ID to JSON format."""
 import json
-import requests as requests
+import requests
 import sys
 
 if __name__ == "__main__":
