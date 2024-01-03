@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """Exports employee ID to JSON format."""
-import sys
-import requests
 import json
+import requests as requests
+import sys
 
 if __name__ == "__main__":
     user_id = sys.argv[1]
