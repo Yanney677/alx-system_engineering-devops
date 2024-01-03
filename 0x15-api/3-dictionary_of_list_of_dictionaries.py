@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Export all employees information to JSON format."""
 import json
-import requests
+import requests as requests
 
 if __name__ == "__main__":
     url = "https://jsonplaceholder.typicode.com/"
