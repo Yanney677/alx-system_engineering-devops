@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Export employee ID to CSV format."""
 import sys
-import requests
+import requests as requests
 import csv
 
 if __name__ == "__main__":
